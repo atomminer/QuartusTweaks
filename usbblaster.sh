@@ -38,17 +38,24 @@ fi
 
 source ~/.bashrc
 
+# libudev was not found on my machine at suggested path. 
+# Find it on your machine with "sudo find / -name libudev*"
+echo "Ensuring libudev is found"
+sudo ln -s /lib/x86_64-linux-gnu/libudev.so.1 /lib/x86_64-linux-gnu/libudev.so.0
+
 # add USB Blaster rules to udev
 echo "Setting up USB Blaster rules..."
-sudo touch /etc/udev/rules.d/usbblaster.rules
-echo "SUBSYSTEM==\"usb\", ATTR{idVendor}==\"09fb\", ATTR{idProduct}==\"6001\", MODE=\"0666\"" | sudo tee /etc/udev/rules.d/usbblaster.rules -a
-echo "SUBSYSTEM==\"usb\", ATTR{idVendor}==\"09fb\", ATTR{idProduct}==\"6002\", MODE=\"0666\"" | sudo tee /etc/udev/rules.d/usbblaster.rules -a
-echo "SUBSYSTEM==\"usb\", ATTR{idVendor}==\"09fb\", ATTR{idProduct}==\"6003\", MODE=\"0666\"" | sudo tee /etc/udev/rules.d/usbblaster.rules -a
-echo "SUBSYSTEM==\"usb\", ATTR{idVendor}==\"09fb\", ATTR{idProduct}==\"6010\", MODE=\"0666\"" | sudo tee /etc/udev/rules.d/usbblaster.rules -a
-echo "SUBSYSTEM==\"usb\", ATTR{idVendor}==\"09fb\", ATTR{idProduct}==\"6810\", MODE=\"0666\"" | sudo tee /etc/udev/rules.d/usbblaster.rules -a
+sudo touch /etc/udev/rules.d/51-usbblaster.rules
+echo "SUBSYSTEM==\"usb\", ATTR{idVendor}==\"09fb\", ATTR{idProduct}==\"6001\", MODE=\"0666\"" | sudo tee /etc/udev/rules.d/51-usbblaster.rules -a
+echo "SUBSYSTEM==\"usb\", ATTR{idVendor}==\"09fb\", ATTR{idProduct}==\"6002\", MODE=\"0666\"" | sudo tee /etc/udev/rules.d/51-usbblaster.rules -a
+echo "SUBSYSTEM==\"usb\", ATTR{idVendor}==\"09fb\", ATTR{idProduct}==\"6003\", MODE=\"0666\"" | sudo tee /etc/udev/rules.d/51-usbblaster.rules -a
+echo "SUBSYSTEM==\"usb\", ATTR{idVendor}==\"09fb\", ATTR{idProduct}==\"6010\", MODE=\"0666\"" | sudo tee /etc/udev/rules.d/51-usbblaster.rules -a
+echo "SUBSYSTEM==\"usb\", ATTR{idVendor}==\"09fb\", ATTR{idProduct}==\"6810\", MODE=\"0666\"" | sudo tee /etc/udev/rules.d/51-usbblaster.rules -a
 
 echo "Reloading libudev rules..."
 sudo udevadm control --reload
 
 echo "Quartus Prime Lite should be all set. Script created by http://www.atomminer.com"
+echo "Test functionality by running jtagd then jtagconfig"
+echo "Script modified by tumbleshack@github."
 
