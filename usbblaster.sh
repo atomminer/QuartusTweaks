@@ -38,10 +38,6 @@ fi
 
 source ~/.bashrc
 
-# libudev was not found on my machine at suggested path. 
-# Find it on your machine with "sudo find / -name libudev*"
-echo "Ensuring libudev is found"
-sudo ln -s /lib/x86_64-linux-gnu/libudev.so.1 /lib/x86_64-linux-gnu/libudev.so.0
 
 # add USB Blaster rules to udev
 echo "Setting up USB Blaster rules..."
@@ -53,7 +49,9 @@ echo "SUBSYSTEM==\"usb\", ATTR{idVendor}==\"09fb\", ATTR{idProduct}==\"6010\", M
 echo "SUBSYSTEM==\"usb\", ATTR{idVendor}==\"09fb\", ATTR{idProduct}==\"6810\", MODE=\"0666\"" | sudo tee /etc/udev/rules.d/51-usbblaster.rules -a
 
 echo "Reloading libudev rules..."
-sudo udevadm control --reload
+# it seems like reloading udev doesn't work correct on some debian distros. Restarting udev service however works perfectly where udev is used
+#sudo udevadm control --reload
+sudo service udev restart &> /dev/null
 
 echo "Quartus Prime Lite should be all set. Script created by http://www.atomminer.com"
 echo "Test functionality by running jtagd then jtagconfig"
